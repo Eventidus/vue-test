@@ -70,7 +70,7 @@ export default {
     login() {
       this.$refs.form.validate(async(isOK) => {
         if (isOK) {
-          await this.$store.dispatch('user/login', '123456')
+          await this.$store.dispatch('user/login', this.loginForm)
         }
       })
     }
