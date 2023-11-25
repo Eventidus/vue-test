@@ -7,9 +7,10 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar" class="user-avatar">
-          <i class="name">{{ name }}</i>
-          <i class="el-icon-setting" />
+          <img v-if="avatar" :src="avatar" class="user-avatar">
+          <span v-else class="username">{{ name?.charAt(0) }}</span>
+          <span class="name">{{ name }}</span>
+          <span class="el-icon-setting" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
@@ -121,6 +122,18 @@ export default {
         align-items: center;
         margin-top: 5px;
         position: relative;
+
+        .username{
+          width: 25px;
+          height: 25px;
+          line-height: 25px;
+          text-align: center;
+          margin-right: 4px;
+          border-radius: 50%;
+          background: rgb(177, 231, 138);
+          color: #fff;
+
+        }
         .name{
           margin-right: 10px;
           font-size: 14px;
