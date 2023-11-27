@@ -25,6 +25,10 @@ const actions = {
   async getUserInfo({ commit }) {
     const result = await getUserInfo()
     commit('setUserInfo', result)
+  },
+  logout({ commit }) {
+    commit('removeToken')
+    commit('setUserInfo', {})
   }
 }
 export default {

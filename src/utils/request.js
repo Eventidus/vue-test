@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from '@/store'
+import router from '@/router'
 import { Message } from 'element-ui'
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
@@ -23,7 +24,13 @@ service.interceptors.response.use((response) => {
     Message.error(message)
     return Promise.reject(new Error(message))
   }
-}, (error) => {
+}, async(error) => {
+  if (error.response.status === 401) {
+    Message.warning('登录信息过期，请重新登录!')
+    await store.dispatch('/user/logout')
+    router.push('/login')
+    return Promise.reject(error)
+  }
   Message.error(error.message)
   return Promise.reject(error)
 })
