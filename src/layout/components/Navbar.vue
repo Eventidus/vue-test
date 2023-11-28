@@ -27,10 +27,30 @@
           <a target="_blank" href="https://apifox.com/apidoc/shared-e2644216-aad4-4529-a630-78f0631ab076">
             <el-dropdown-item>API Docs</el-dropdown-item>
           </a>
+          <a target="_blank" @click.prevent="updatePassword">
+            <el-dropdown-item>Update Password</el-dropdown-item>
+          </a>
           <el-dropdown-item @click.native="logout">
             <span style="display:block;">Log Out</span>
           </el-dropdown-item>
         </el-dropdown-menu>
+        <el-dialog :visible.sync="showDialog" title="修改密码" width="500px">
+          <el-form ref="passForm" label-width="120px" :model="passForm" :rules="rules">
+            <el-form-item prop="oldPassword" label="旧密码">
+              <el-input v-model="passForm.oldPassword" show-password size="small" />
+            </el-form-item>
+            <el-form-item prop="newPassword" label="新密码">
+              <el-input v-model="passForm.newPassword" show-passwor size="small" />
+            </el-form-item>
+            <el-form-item prop="confirmPassword" label="重复新密码">
+              <el-input v-model="passForm.confirmPassword" show-passwor ize="small" />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" size="mini">确认修改</el-button>
+              <el-button size="mini">取消修改</el-button>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
       </el-dropdown>
     </div>
   </div>
@@ -46,6 +66,32 @@ export default {
     Breadcrumb,
     Hamburger
   },
+  data() {
+    return {
+      showDialog: false,
+      passForm: {
+        oldPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+      },
+      rules: {
+        oldPassword: [{ required: true, message: '旧密码不能为空', trigger: 'blur' }],
+        newPassword: [{ required: true, message: '新密码不能为空', trigger: 'blur' }, {
+          min: 6, max: 16, message: '密码长度应为6-16位'
+        }],
+        confirmPassword: [{ required: true, message: '重复密码不能为空', trigger: 'blur' },
+          {
+            validator: (rule, value, callback) => {
+              if (this.passForm.newPassword !== value) {
+                callback(new Error('两次密码不一致'))
+                return
+              }
+              callback()
+            }
+          }]
+      }
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar',
@@ -60,6 +106,9 @@ export default {
     async logout() {
       await this.$store.dispatch('user/logout')
       this.$router.push('/login')
+    },
+    updatePassword() {
+      this.showDialog = true
     }
   }
 }
