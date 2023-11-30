@@ -34,7 +34,7 @@
             <span style="display:block;">Log Out</span>
           </el-dropdown-item>
         </el-dropdown-menu>
-        <el-dialog :visible="showDialog" title="修改密码" width="500px">
+        <el-dialog :visible.sync="showDialog" title="修改密码" width="500px" @close="btnCancel">
           <el-form ref="passForm" label-width="120px" :model="passForm" :rules="rules">
             <el-form-item prop="oldPassword" label="旧密码">
               <el-input v-model="passForm.oldPassword" show-password size="small" />
