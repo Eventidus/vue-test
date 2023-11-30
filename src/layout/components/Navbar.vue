@@ -34,7 +34,7 @@
             <span style="display:block;">Log Out</span>
           </el-dropdown-item>
         </el-dropdown-menu>
-        <el-dialog :visible.sync="showDialog" title="修改密码" width="500px">
+        <el-dialog :visible="showDialog" title="修改密码" width="500px">
           <el-form ref="passForm" label-width="120px" :model="passForm" :rules="rules">
             <el-form-item prop="oldPassword" label="旧密码">
               <el-input v-model="passForm.oldPassword" show-password size="small" />
@@ -46,8 +46,8 @@
               <el-input v-model="passForm.confirmPassword" show-passwor ize="small" />
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" size="mini">确认修改</el-button>
-              <el-button size="mini">取消修改</el-button>
+              <el-button type="primary" size="mini" @btnOK="btnOK">确认修改</el-button>
+              <el-button size="mini" @btnCancel="btnCancel">取消修改</el-button>
             </el-form-item>
           </el-form>
         </el-dialog>
@@ -60,7 +60,7 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-
+import { updatePassword } from '@/api/user'
 export default {
   components: {
     Breadcrumb,
@@ -109,6 +109,19 @@ export default {
     },
     updatePassword() {
       this.showDialog = true
+    },
+    btnOK() {
+      this.$refs.passForm.validate(async isOK => {
+        if (isOK) {
+          await updatePassword(this.passForm)
+          this.$message.success('密码修改成功')
+          this.btnCancel()
+        }
+      })
+    },
+    btnCancel() {
+      this.$refs.passForm.resetFields()
+      this.showDialog = false
     }
   }
 }
