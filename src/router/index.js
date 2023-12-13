@@ -5,7 +5,14 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
-
+import Department from './modules/department'
+import Approval from './modules/approval'
+import Attendance from './modules/attendance'
+import Employee from './modules/employee'
+import Permission from './modules/permission'
+import Role from './modules/role'
+import Salary from './modules/salary'
+import Social from './modules/social'
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -54,7 +61,14 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
-
+  Department,
+  Role,
+  Employee,
+  Permission,
+  Attendance,
+  Approval,
+  Salary,
+  Social,
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
